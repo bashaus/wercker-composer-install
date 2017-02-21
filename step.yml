@@ -1,0 +1,28 @@
+name: composer-install
+version: 0.0.1
+summary: |
+  Install composer dependencies. Includes a packaged version of composer and
+  caches for later user in $WERCKER_CACHE_DIR.
+tags:
+  - composer
+  - php
+
+properties:
+  - name: clear-cache-on-failed
+    type: bool
+    required: false
+    default: "true"
+
+  - name: use-cache
+    type: bool
+    required: false
+    default: "true"
+
+  - name: dev
+    type: bool
+    required: false
+    default: "false"
+
+  - name: opts
+    type: string
+    required: false

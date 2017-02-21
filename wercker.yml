@@ -1,0 +1,35 @@
+box: php:7.1
+
+build:
+  steps:
+    - script:
+      name: remove git
+      code: rm -rf $WERCKER_ROOT/.git
+
+    - script:
+      name: install composer
+      code: |
+        WERCKER_COMPOSER_INSTALL_EXPECTED_SIGNATURE=$(curl https://composer.github.io/installer.sig)
+        debug "Expected signature: $WERCKER_COMPOSER_INSTALL_EXPECTED_SIGNATURE"
+
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        WERCKER_COMPOSER_INSTALL_ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+        debug "Actual signature: $WERCKER_COMPOSER_INSTALL_ACTUAL_SIGNATURE"
+
+        [[ "$WERCKER_COMPOSER_INSTALL_EXPECTED_SIGNATURE" != "$WERCKER_COMPOSER_INSTALL_ACTUAL_SIGNATURE" ]] \
+          && fail "Invalid installer signature"
+
+        php composer-setup.php
+        WERCKER_COMPOSER_INSTALL_RESULT=$?
+        rm composer-setup.php
+
+        if [ $WERCKER_COMPOSER_INSTALL_RESULT -ne 0 ]; then
+          fail "composer-setup.php failed to install"
+        fi
+
+        $WERCKER_ROOT/composer.phar --version
+
+publish:
+  steps:
+    - internal/publish-step:
+        owner: bashaus
