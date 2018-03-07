@@ -1,5 +1,5 @@
 name: composer-install
-version: 0.0.1
+version: 0.0.2
 summary: |
   Install composer dependencies. Includes a packaged version of composer and
   caches for later user in $WERCKER_CACHE_DIR.
