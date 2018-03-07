@@ -24,6 +24,20 @@ case "$WERCKER_COMPOSER_INSTALL_DEV" in
   * ) fail "Property dev must be either true or false"
 esac
 
+# Dependency: GIT
+if [[ ! -n "$(type -t git)" ]];
+then
+    apt-get update
+    apt-get install -y git
+fi
+
+# Dependency: ZIP
+if [[ ! -n "$(type -t zip)" ]];
+then
+    apt-get update
+    apt-get install -y zip
+fi
+
 main() {
   if [ "$WERCKER_COMPOSER_INSTALL_USE_CACHE" == "1" ]; then
     info "Using wercker cache"
