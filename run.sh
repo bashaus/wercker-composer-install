@@ -25,17 +25,21 @@ case "$WERCKER_COMPOSER_INSTALL_DEV" in
 esac
 
 # Dependency: GIT
-if [[ ! -n "$(type -t git)" ]];
-then
-    apt-get update
-    apt-get install -y git
+if [[ ! -n "$(type -t git)" ]]; then
+  debug "GIT is not installed"
+  info "Consider using a box with GIT pre-installed"
+
+  apt-get update
+  apt-get install -y git
 fi
 
 # Dependency: ZIP
-if [[ ! -n "$(type -t zip)" ]];
-then
-    apt-get update
-    apt-get install -y zip
+if [[ ! -n "$(type -t zip)" ]]; then
+  debug "ZIP is not installed"
+  info "Consider using a box with ZIP pre-installed"
+
+  apt-get update
+  apt-get install -y zip
 fi
 
 main() {
